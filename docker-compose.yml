@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  service-1:
+    container_name: service-1
+    build: ./service-1
+    image: romany/service-1:0.0.1
+    ports:
+      - '3001:3000'
+    volumes:
+      - ./service-1:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      SERVICE_2_URL: 'http://service-2:5001' # URL to access service-2 within the Docker network
+  service-2:
+    container_name: service-2
+    build: ./service-2
+    image: romany/service-2:0.0.1
+    ports:
+      - '5005:5001'
+    volumes:
+      - ./service-2:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      SERVICE_1_URL: 'http://localhost:3001' # URL to access service-1 within the Docker network
