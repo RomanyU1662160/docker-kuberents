@@ -291,11 +291,11 @@ The difference between **Ingress** and **Ingress Controller** in Kubernetes lies
 1. **Ingress**:
    - **Definition**: Ingress is a Kubernetes resource that defines rules for routing external HTTP/S traffic to services within the cluster.
    - **Purpose**: It specifies how requests should be directed based on hostnames and paths, but it does not handle the actual traffic routing itself.
-   - **Configuration**: Ingress resources are created and managed by users to define the desired routing behavior.
+   - **Configuration**: Ingress resources (Services) are created and managed by users to define the desired routing behavior.
 2. **Ingress Controller**:
-   - **Definition**: An Ingress Controller is a specialized load balancer that implements the rules defined in Ingress resources.
+   - **Definition**: An Ingress Controller is a specialized load balancer that implements the rules defined in Ingress Services.
    - **Purpose**: It actively manages and routes incoming traffic based on the Ingress rules, handling tasks such as load balancing, SSL termination, and path-based routing.
-   - **Implementation**: Ingress Controllers are deployed as pods within the Kubernetes cluster and continuously monitor Ingress resources to apply the defined routing rules.
+   - **Implementation**: Ingress Controllers are deployed as pods within the Kubernetes cluster and continuously monitor Ingress resources (Services) to apply the defined routing rules.
 
 ### Summary Diagram of Ingress and Ingress Controller
 
