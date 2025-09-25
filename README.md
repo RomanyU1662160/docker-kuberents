@@ -34,6 +34,8 @@ kubectl apply -f .
 ```
 
 **Access URLs in Production:**
+
+This is defined in the ingress.yaml file
 - Frontend: `http://fe-client.example.com`
 - Service-1: `http://service-1.example.com`
 - Service-2: `http://service-2.example.com`
