@@ -1,5 +1,45 @@
 # Kubernetes Architecture Overview
 
+## How to Run This Application
+
+### Development Mode (Docker Compose)
+For local development with hot reload and debugging:
+
+```bash
+# Run all services locally
+docker-compose up -d
+
+# This will:
+# - Build local Docker images for all 3 services
+# - Start fe-client on http://localhost:5173
+# - Start service-1 on http://localhost:3000  
+# - Start service-2 on http://localhost:5001
+```
+
+### Production Mode (Kubernetes)
+For production deployment with load balancing and scaling:
+
+```bash
+# Navigate to Kubernetes configuration directory
+cd _infra_/k8s
+
+# Deploy all services to Kubernetes cluster
+kubectl apply -f .
+
+# This will:
+# - Deploy production images from Docker Hub
+# - Create 2 replicas of each service for high availability
+# - Set up ingress routing with custom domains
+# - Use nginx for serving static frontend files
+```
+
+**Access URLs in Production:**
+- Frontend: `http://fe-client.example.com`
+- Service-1: `http://service-1.example.com`
+- Service-2: `http://service-2.example.com`
+
+---
+
 ## Cluster Architecture Diagram
 
 ```
