@@ -1,5 +1,5 @@
 {
-  "name": "k8-example",
+  "name": "k8-service-2",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
