@@ -1,0 +1,21 @@
+# IMPORTANT: Vite environment variables must be set BEFORE build
+# They get compiled into the JavaScript files during build time
+
+# Build stage
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+# IMPORTANT: Vite environment variables must be set BEFORE build
+# They get compiled into the JavaScript files during build time
+# We need to set environment variables here not in _infra_/k8s/fe-client.depl.yml file, it will be too late then as we need them during build
+# Vite bundle the env variables into the static files during build time not runtime, so we need to set them here before build.
+ENV VITE_SERVICE_1_URL_DEV=http://service-1.example.com 
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
