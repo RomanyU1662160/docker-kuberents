@@ -12,6 +12,13 @@ app.use(express.json());
 // Middleware to parse URL-encoded requests
 app.use(express.urlencoded({ extended: true }));
 
+const orders = [
+  { id: 1, item: 'Laptop', quantity: 1, user_id: 1 },
+  { id: 2, item: 'Phone', quantity: 2, user_id: 1 },
+  { id: 3, item: 'Tablet', quantity: 1, user_id: 2 },
+  { id: 4, item: 'Monitor', quantity: 3, user_id: 2 },
+];
+
 // Basic route
 app.get('/', (req: Request, res: Response) => {
   res.json({
@@ -38,6 +45,12 @@ app.get('/api/users', (req: Request, res: Response) => {
       { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
     ],
   });
+});
+
+app.get('/api/user/:id/orders', (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+  const userOrders = orders.filter((order) => order.user_id === userId);
+  res.json({ orders: userOrders });
 });
 
 // 404 handler - catch all unmatched routes

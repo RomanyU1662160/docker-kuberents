@@ -41,7 +41,7 @@ metadata:
   name: ingress-service-2
   annotations:
     kubernetes.io/ingress.class: nginx
-    # nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
     - host: service-2.example.com
@@ -53,14 +53,21 @@ spec:
               service:
                 name: service-2-svc # must match the service name defined in service2.depl.yaml
                 port:
-                  number: 5001 # must match the port defined in service2.depl.yaml
+                  number: 5001 # must match the target port defined in service2.depl.yaml
           - path: /health
             pathType: Prefix
             backend:
               service:
                 name: service-2-svc # must match the service name defined in service2.depl.yaml
                 port:
-                  number: 5001 # must match the port (Not the target port) defined in service2.depl.yaml
+                  number: 5001 # must match the target port defined in service2.depl.yaml
+          - path: /api/users/?(.*)/orders
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: service-2-svc # must match the service name defined in service2.depl.yaml
+                port:
+                  number: 5001 # must match the target port defined in service2.depl.yaml
   ingressClassName: nginx
 
 ---

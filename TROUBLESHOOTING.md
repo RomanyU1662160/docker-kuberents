@@ -157,6 +157,52 @@ image: romanysefen/k8-learn-fe-client:latest
 
 ---
 
+## 5. Service-to-Service Communication Issues
+
+### Problem
+Getting `ECONNREFUSED 127.0.0.1:80` errors when service-1 tries to call service-2, even though both services are running and Ingress routes are configured.
+
+### Root Cause
+Using external domain names (`http://service-2.example.com`) for internal service-to-service communication. External domains are meant for traffic coming from outside the cluster through Ingress, not for pod-to-pod communication inside the cluster.
+
+### Solution
+Use internal ClusterIP service names for service-to-service communication:
+
+```yaml
+# ❌ Wrong - External domain for internal communication
+env:
+  - name: SERVICE_2_URL
+    value: "http://service-2.example.com"
+
+# ✅ Correct - Internal service name
+env:
+  - name: SERVICE_2_URL
+    value: "http://service-2-svc:5001"
+```
+
+### Traffic Flow Examples
+
+**External Access (Browser → Service):**
+```
+Browser → service-1.example.com/svc-2/123/orders
+        → Ingress Controller
+        → service-1-svc:3000
+        → service-1 pod
+```
+
+**Internal Communication (Service → Service):**
+```
+service-1 pod → service-2-svc:5001/api/user/123/orders
+              → service-2 pod (direct ClusterIP)
+```
+
+### Key Lesson
+- **Ingress routes**: Only needed for endpoints that external users access directly
+- **Internal communication**: Always use ClusterIP service names (`service-name:port`)
+- **Don't create Ingress routes** for internal service-to-service API calls
+
+---
+
 ## General Best Practices Learned
 
 1. **Environment Variables**:

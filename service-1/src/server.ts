@@ -71,6 +71,26 @@ app.get('/svc-2/health', async (req: Request, res: Response) => {
   }
 });
 
+app.get('/svc-2/:id/orders', async (req: Request, res: Response) => {
+  try {
+    console.log('Request params.id:', req.params.id);
+    const userId = parseInt(req.params.id);
+    console.log('service2Url:', `${service2Url}/api/user/${userId}/orders`);
+    const response = await fetch(`${service2Url}/api/user/${userId}/orders`);
+    const data = await response.json();
+    res.json({
+      message: 'Response from service-2',
+      data,
+    });
+  } catch (error) {
+    console.error('Error calling service-2:', error);
+    res.status(500).json({
+      error: 'Failed to call service-2',
+      message: (error as Error).message,
+    });
+  }
+});
+
 // 404 handler - catch all unmatched routes
 app.use((req: Request, res: Response) => {
   res.status(404).json({

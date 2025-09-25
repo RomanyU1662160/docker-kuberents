@@ -16,8 +16,11 @@ spec:
             - name: service-1
               image: romanysefen/k8-learn-service-1:latest
               env:
+              # Here we did not use the URL of the ingress because service-1 needs to communicate with service-2 internally within the cluster
+              # Using the ingress URL would route the traffic outside the cluster and back in, which is inefficient and can lead to issues
+              # Instead, we use the internal service name and port defined in the service-2 service
                 - name: SERVICE_2_URL
-                  value: "http://service-2.example.com"  # URL to access service-2, must match the hostname and port defined in service2.depl.yaml
+                  value: "http://service-2-svc:5001"  # Internal service name and port of service-2 defined in service2.depl.yaml, not the ingress URL as it is for external access
 ---
 # ClusterIP Service to expose service-1 within the cluster for local communication
 apiVersion: v1
