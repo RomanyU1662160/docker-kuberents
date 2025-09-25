@@ -16,6 +16,12 @@ docker-compose up -d
 # - Start service-2 on http://localhost:5001
 ```
 
+To stop and remove containers:
+
+```bash
+docker-compose down --remove-orphans
+```
+
 ### Production Mode (Kubernetes)
 For production deployment with load balancing and scaling:
 
