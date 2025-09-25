@@ -1,17 +1,26 @@
 import express, { Request, Response, Application } from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
-import fetch from 'node-fetch';
 
 dotenv.config();
-const service2Url = process.env.SERVICE_2_URL || 'http://localhost:5001';
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
+
+// Enable CORS
+app.use(cors());
 
 // Middleware to parse JSON requests
 app.use(express.json());
 
 // Middleware to parse URL-encoded requests
 app.use(express.urlencoded({ extended: true }));
+
+const users = [
+  { id: 1, name: 'John Doe', email: 'john@example.com' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+];
+
+const service2Url = process.env.SERVICE_2_URL || 'http://localhost:5001';
 
 // Basic route
 app.get('/', (req: Request, res: Response) => {
@@ -20,6 +29,10 @@ app.get('/', (req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     port: PORT,
   });
+});
+
+app.get('/users', (req: Request, res: Response) => {
+  res.json({ users });
 });
 
 // Health check endpoint
