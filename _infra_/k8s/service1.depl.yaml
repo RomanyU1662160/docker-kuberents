@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: service-1-depl
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: service-1
@@ -14,11 +14,12 @@ spec:
       spec:
          containers:
             - name: service-1
-              image: romany/service-1:0.0.1
+              image: romanysefen/k8-learn-service-1:latest
               env:
                 - name: SERVICE_2_URL
-                  value: "http://service-2-svc:5001"  # URL to access service-2 within the cluster
+                  value: "http://service-2.example.com"  # URL to access service-2, must match the hostname and port defined in service2.depl.yaml
 ---
+# ClusterIP Service to expose service-1 within the cluster for local communication
 apiVersion: v1
 kind: Service
 metadata:
@@ -30,9 +31,10 @@ spec:
   ports:
     - name: service-1-http  
       protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 3000 
+      targetPort: 3000 # must match the port defined in the Dockerfile and container specification above
 ---
+# NodePort Service to expose service-1 outside the cluster for testing purposes
 apiVersion: v1
 kind: Service
 metadata:

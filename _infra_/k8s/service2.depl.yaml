@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: service-2-depl
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: service-2
@@ -14,17 +14,34 @@ spec:
     spec:
       containers:
         - name: service-2
-          image: romany/service-2:0.0.1
+          image: romanysefen/k8-learn-service-2:latest
           env:
             - name: SERVICE_1_URL
-              value: "http://service-1-svc:3000"  # URL to access service-1 within the cluster
+              value: "http://service-1.example.com"  # URL to access service-1 within the cluster
 ---
+# ClusterIP Service to expose service-2 within the cluster for local communication
 apiVersion: v1
 kind: Service
 metadata:
   name: service-2-svc
 spec: 
   type: ClusterIP
+  selector:
+    app: service-2  # must match the label in the Pod template above to link the Service to the Pods
+  ports:
+    - name: service-2-http
+      protocol: TCP
+      port: 5001  # External port (what other services call)
+      targetPort: 5001 # Internal port (what the container listens on)
+  
+---
+# NodePort Service to expose service-2 outside the cluster for testing purposes
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-2-nodeport-svc
+spec: 
+  type: NodePort
   selector:
     app: service-2  # must match the label in the Pod template above to link the Service to the Pods
   ports:

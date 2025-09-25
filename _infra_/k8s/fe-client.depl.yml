@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-client-depl
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fe-client
+  template:
+      metadata:
+        labels:
+          app: fe-client
+          # NOTE: No env variables needed here for Vite apps in the production build, 
+          # as Vite variables are set at build time in Dockerfile, not runtime
+          # See Dockerfile.prod for more details
+          # We use the production build of the React app, which uses Nginx to serve the files
+      spec:
+         containers:
+            - name: fe-client
+              image: romanysefen/k8-learn-fe-client:latest
+               
+              ports:
+              # We build the image using Dockerfile.prod  and pushed it to Docker hub, to avoid the websocket error , 
+              # We expose port 80 as it is the Nginx default port in the production build
+                - containerPort: 80 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-client-svc
+spec:
+  type: ClusterIP # Exposes the service on each Node's IP at a static port (the NodePort)
+  selector:
+    app: fe-client
+  ports:
+    - name: fe-client-http  
+      protocol: TCP
+      port: 80  # the port that will be exposed by the service
+      targetPort: 80  # must match the port defined in the container above

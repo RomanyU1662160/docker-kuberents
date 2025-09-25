@@ -3,7 +3,7 @@ services:
   service-1:
     container_name: service-1
     build: ./service-1
-    image: romany/service-1:0.0.1
+    image: romanysefen/local-service-1:0.0.1 #  build and tag the image locally for local testing
     ports:
       - '3001:3000'
     volumes:
@@ -11,11 +11,11 @@ services:
       - /app/node_modules
     command: npm run dev
     environment:
-      SERVICE_2_URL: 'http://service-2:5001' # URL to access service-2 within the Docker network
+      SERVICE_2_URL: 'http://service-2:5001' # URL to access service-2 within the Docker network, we use the service name and port defined in ClusterIP service in service2.depl.yaml
   service-2:
     container_name: service-2
     build: ./service-2
-    image: romany/service-2:0.0.1
+    image: romanysefen/local-service-2:0.0.1 #  build and tag the image locally for local testing
     ports:
       - '5005:5001'
     volumes:
@@ -23,4 +23,16 @@ services:
       - /app/node_modules
     command: npm run dev
     environment:
-      SERVICE_1_URL: 'http://localhost:3001' # URL to access service-1 within the Docker network
+      SERVICE_1_URL: 'http://localhost:3001' # URL to access service-1 within the Docker network, we use localhost and the mapped port defined in service-1 above
+  fe-client:
+    container_name: fe-client
+    build: ./fe-client
+    image: romanysefen/local-fe-client:0.0.1 #  build and tag the image locally for local testing
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./fe-client:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      VITE_SERVICE_1_URL_DEV: 'http://localhost:3001' # URL to access service-1 from the frontend within the Docker network
