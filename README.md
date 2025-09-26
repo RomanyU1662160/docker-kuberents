@@ -8,6 +8,8 @@ For local development with hot reload and debugging:
 ```bash
 # Run all services locally
 docker-compose up -d
+# OR use Makefile
+make dev
 
 # This will:
 # - Build local Docker images for all 3 services
@@ -20,6 +22,8 @@ To stop and remove containers:
 
 ```bash
 docker-compose down --remove-orphans
+# OR use Makefile
+make dev-stop
 ```
 
 ### Production Mode (Kubernetes)
@@ -37,6 +41,22 @@ kubectl apply -f .
 # - Create 2 replicas of each service for high availability
 # - Set up ingress routing with custom domains
 # - Use nginx for serving static frontend files
+```
+
+**Automated Deployment with Makefile:**
+After making code changes, use these commands to build, push, and deploy:
+
+```bash
+# Deploy individual services
+make deploy SERVICE=fe-client    # Deploy frontend
+make deploy SERVICE=service-1    # Deploy service-1
+make deploy SERVICE=service-2    # Deploy service-2
+
+# Deploy all services at once
+make deploy-all
+
+# Other useful commands
+make help                        # Show all available commands
 ```
 
 **Access URLs in Production:**

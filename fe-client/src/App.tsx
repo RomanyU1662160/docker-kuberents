@@ -92,13 +92,15 @@ function App() {
           ) : (
             <div className='bg-white p-6 rounded shadow-md'>
               <h1 className='text-2xl text-center text-red-900 font-bold mb-4'>
-                Users
+                Users List
               </h1>
               <ul>
                 {users.map((user: User) => (
                   <li key={user.id} className='mb-2 w-full border-b pb-2'>
                     <span className='font-semibold'>{user.name}</span> -{' '}
                     <span className='text-gray-600'>{user.email}</span>
+                    <br />
+                    <span className='text-sm text-gray-500'>Orders:</span>
                     {user.orders && user.orders.length > 0 ? (
                       <ul className='mt-2 ml-4 list-disc'>
                         {user.orders.map((order: Order) => (
