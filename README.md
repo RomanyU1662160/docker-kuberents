@@ -42,8 +42,10 @@ kubectl apply -f .
 # - Set up ingress routing with custom domains
 # - Use nginx for serving static frontend files
 ```
+## Deployment Details
+You can use either the **Makefile** or **Skaffold** for automated deployment and development workflows.
 
-**Automated Deployment with Makefile:**
+### 1 -Automated Deployment with Makefile:
 After making code changes, use these commands to build, push, and deploy:
 
 ```bash
@@ -55,9 +57,42 @@ make deploy SERVICE=service-2    # Deploy service-2
 # Deploy all services at once
 make deploy-all
 
+ # Delete all deployed resources
+make delete-all     
+
+ # Clean up Docker resources that are not in use
+make cleanup  
+                 
 # Other useful commands
 make help                        # Show all available commands
 ```
+
+### 2- Automated Development with Skaffold:
+For continuous development with automatic rebuilds and deployments:
+
+```bash
+# Start development mode (watches for code changes)
+npm run dev
+# OR
+skaffold dev
+
+# Deploy once and exit
+npm run deploy
+# OR
+skaffold run
+
+# Clean up all resources
+npm run cleanup
+# OR
+skaffold delete
+```
+
+Skaffold will automatically:
+- Watch your code for changes
+- Rebuild Docker images when files change
+- Redeploy to Kubernetes automatically
+- Stream logs from all pods
+- Set up port forwarding
 
 **Access URLs in Production:**
 

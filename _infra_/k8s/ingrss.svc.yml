@@ -7,7 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true" # this allows regex in paths (if needed)
 spec:
   rules:
-    - host: service-1.example.com
+   # Here we tell the ingress that any request coming to service-1.example.com should be routed to service-1-svc service on port 3000 (defined in service1.depl.yaml)
+    - host: service-1.example.com   # We need to set up /etc/hosts, run `code /etc/hosts` to map this hostname to localhost IP, this is for local testing only
       http:
         paths:
           - path: /

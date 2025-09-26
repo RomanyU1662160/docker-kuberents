@@ -1,0 +1,24 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: k--example
+build:
+  artifacts:
+    - image: romanysefen/k8-learn-fe-client
+      context: fe-client
+      docker:
+        dockerfile: Dockerfile.prod
+    - image: romanysefen/k8-learn-service-1
+      context: service-1
+      docker:
+        dockerfile: Dockerfile
+    - image: romanysefen/k8-learn-service-2
+      context: service-2
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - _infra_/k8s/fe-client.depl.yml
+    - _infra_/k8s/ingrss.svc.yml
+    - _infra_/k8s/service1.depl.yaml
+    - _infra_/k8s/service2.depl.yaml
