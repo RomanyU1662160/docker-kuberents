@@ -71,7 +71,7 @@ app.get('/svc-2/health', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/svc-2/:id/orders', async (req: Request, res: Response) => {
+app.get('/svc-2/users/:id/orders', async (req: Request, res: Response) => {
   try {
     console.log('Request params.id:', req.params.id);
     const userId = parseInt(req.params.id);

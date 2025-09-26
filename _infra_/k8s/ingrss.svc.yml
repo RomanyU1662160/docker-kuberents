@@ -31,9 +31,14 @@ spec:
                 name: service-1-svc # must match the service name defined in service1.depl.yaml
                 port:
                   number: 3000
+          - path: /svc-2/users/(.*)/orders
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: service-1-svc # must match the service name defined in service1.depl.yaml
+                port:
+                  number: 3000
   ingressClassName: nginx
-
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -60,14 +65,7 @@ spec:
               service:
                 name: service-2-svc # must match the service name defined in service2.depl.yaml
                 port:
-                  number: 5001 # must match the target port defined in service2.depl.yaml
-          - path: /api/users/?(.*)/orders
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: service-2-svc # must match the service name defined in service2.depl.yaml
-                port:
-                  number: 5001 # must match the target port defined in service2.depl.yaml
+                  number: 5001
   ingressClassName: nginx
 
 ---
